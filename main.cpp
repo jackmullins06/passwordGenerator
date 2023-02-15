@@ -18,10 +18,22 @@ std::string password_gen(std::size_t length = 20) {
 
     std::string password;
 
-    for (int i = 0; i < length; ++i) {
-        password += characters[distribution(generator)];    
-    }
+    bool has_special = false;
+    bool has_upper = false;
 
+    while (!has_special || !has_upper) {
+        password.clear();
+
+        has_special = false;
+        has_upper = false;
+        
+        for (size_t i = 0; i < length; ++i) {
+            char c = characters[distribution(generator)];
+            password += c;
+            has_special = has_special || (c >= '!' && c <= '/' || c >= ':' && c <= '@' || c >= '[' && c <= '`' || c >= '{' && c <= '~');
+            has_upper = has_upper || (c >= 'A' && c <= 'Z');
+        }
+    }
     return password;
 }
 
@@ -30,7 +42,7 @@ std::string password_gen(std::size_t length = 20) {
  * to the console. */
 int main() {
     for(int i = 0; i < 5; i++) {
-       std::cout << password_gen(35) << "\n" << std::endl;
+       std::cout << password_gen(16) << std::endl;
     }
     return 0;
 }
