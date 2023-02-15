@@ -1,17 +1,19 @@
-# Password Generator
+# Password Generator
+This is a simple program that generates secure, randomly generated passwords.
 
-This is a simple password generator program that creates random, secure passwords of user-specified length.
+## Installation
+To use this program, you will need a C++ compiler. You can download the code from this repository and compile it yourself, or you can download the pre-compiled binary file.
 
-## Features
+## Usage
+To use the program, simply run the compiled binary file. The program will generate 5 passwords, each with a length of 20 characters, and print them to the console.
 
-- Generates a random password of user-specified length (default length is 20 characters)
-- Uses a Mersenne Twister pseudo-random number generator
-- Incorporates a wide range of characters, including lowercase and uppercase letters, numbers, and special characters
+You can also modify the program to generate passwords of different lengths by changing the length parameter in the password_gen function.
 
-## How to Use
+## Security
+This program uses a Mersenne Twister pseudo-random generator, which is a secure and reliable way to generate random numbers. The generated passwords contain a mix of lower case letters, upper case letters, digits, and special characters, which makes them difficult to crack.
 
-The program can be run in a C++ development environment. Simply compile and run the code to generate five random passwords of length 35. The password generation function can also be called with a different length as an argument to generate passwords of a different length.
+## Contributing
+If you find any bugs or have any suggestions for improving this program, please open an issue or a pull request on this repository.
 
-## Note
-
-It's important to note that while this password generator creates random and secure passwords, it's always a good idea to use a unique password for every online account and to regularly change passwords to ensure maximum security.
+## License
+This program is licensed under the MIT License. Feel free to use, modify, and distribute it as you wish.#
