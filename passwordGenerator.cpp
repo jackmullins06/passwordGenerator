@@ -20,18 +20,21 @@ std::string password_gen(std::size_t length = 16) {
 
     bool has_special = false;
     bool has_upper = false;
+    bool has_lower = false;
 
     while (!has_special || !has_upper) {
         password.clear();
 
         has_special = false;
         has_upper = false;
+        has_lower = false;
 
         for (size_t i = 0; i < length; ++i) {
             char c = characters[distribution(generator)];
             password += c;
             has_special = has_special || (c >= '!' && c <= '/' || c >= ':' && c <= '@' || c >= '[' && c <= '`' || c >= '{' && c <= '~');
             has_upper = has_upper || (c >= 'A' && c <= 'Z');
+            has_lower = has_lower || (c >= 'a' && c <= 'z');
         }
     }
     return password;
