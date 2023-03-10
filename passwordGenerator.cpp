@@ -1,16 +1,16 @@
+#include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <random>
-#include <chrono>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
-/**
- * This function returns a 20 character randomly generated string that has 
- * been generated using a Mersenne Twister pseudo-random generator, that 
- * that could be used as a password. */
 std::string password_gen(std::size_t length = 16) {
-    if(length < 16) {
-       throw std::invalid_argument("Password length must be at least 16 characters long");
+    if (length < 16) {
+        throw std::invalid_argument("Password length must be at least 16 characters long");
     }
-    
+
     const std::string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#€£$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
     std::mt19937 generator;
     generator.seed(std::chrono::system_clock::now().time_since_epoch().count());
@@ -29,7 +29,7 @@ std::string password_gen(std::size_t length = 16) {
         has_upper = false;
         has_lower = false;
 
-        for (size_t i = 0; i < length; ++i) {
+        for (std::size_t i = 0; i < length; ++i) {
             char c = characters[distribution(generator)];
             password += c;
             has_special = has_special || (c >= '!' && c <= '/' || c >= ':' && c <= '@' || c >= '[' && c <= '`' || c >= '{' && c <= '~');
@@ -39,6 +39,7 @@ std::string password_gen(std::size_t length = 16) {
     }
     return password;
 }
+
 
 /**
  * The main function prints out 5 different randomly generated passwords
