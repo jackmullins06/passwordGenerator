@@ -41,21 +41,19 @@ bool validatePassword(const std::string& password) {
 }
 
 int main(int argc, char** argv) {
-    std::size_t passwordSize = 0;
-    try {
-        passwordSize = std::stoi(argv[1]);
-    } catch (std::exception& e) {
-        std::cerr << "Invalid argument: " << e.what() << std::endl;
-        return 1;
+    std::size_t passwordSize = 16; // Set default password length to 16
+
+    if (argc >= 2) {
+        try {
+            passwordSize = std::stoi(argv[1]);
+        } catch (std::exception& e) {
+            std::cerr << "Invalid argument: " << e.what() << std::endl;
+            return 1;
+        }
     }
 
     bool validPasswordGenerated = false;
     while (!validPasswordGenerated) {
-        if (passwordSize < 16) {
-            std::cout << "Password must be at least 16 characters long. Generating password of minimum length" << std::endl;
-            passwordSize = 16;
-        }
-
         std::string password = generatePassword(passwordSize);
         if (validatePassword(password)) {
             std::cout << password << std::endl;
