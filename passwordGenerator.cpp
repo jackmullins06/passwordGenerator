@@ -6,39 +6,17 @@
 #include <string>
 #include <vector>
 
-std::size_t promptForLength() {
-    std::size_t passwordLength;
-
-    while(true) {
-        std::cout << "Please enter your desired password length (minimum 16 characters): ";
-        std::string input;
-        std::getline(std::cin, input);
-
-        try {
-            passwordLength = std::stoi(input);
-        } catch (const std::exception& e) {
-            std::cout << "Invalid input. Please enter a positive integer." << std::endl;
-            continue;
-        }
-
-        if(passwordLength >= 16) {
-            return passwordLength;
-        }
-
-        std::cout << "Invalid input. Password length must be at least 16 characters." << std::endl;
-    }
-}
-
 std::string generatePassword(std::size_t length = 16) {
-    const std::string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+    const std::string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"$%&'()*+,-./:;<=>?@[\\]^_`{|}~,";
     std::mt19937 generator;
-    generator.seed(std::chrono::system_clock::now().time_since_epoch().count());
+    std::random_device randomDevice;
+    generator.seed(randomDevice());
     std::uniform_int_distribution<std::size_t> distribution(0, characters.size() - 1);
 
     std::string password;
 
     for (std::size_t i = 0; i < length; ++i) {
-            password += characters[distribution(generator)];
+        password += characters[distribution(generator)];
     }
     return password;
 }
@@ -48,6 +26,7 @@ bool validatePassword(const std::string& password) {
     bool has_upper = false;
     bool has_lower = false;
     bool has_number = false;
+    bool has_comma = false;
 
     for (std::size_t i = 0; i < password.size(); ++i) {
         char c = password[i];
@@ -55,20 +34,33 @@ bool validatePassword(const std::string& password) {
         has_upper = has_upper || (c >= 'A' && c <= 'Z');
         has_lower = has_lower || (c >= 'a' && c <= 'z');
         has_number = has_number || (c >= '0' && c <= '9');
+        has_comma = has_comma || (c == ',');
     }
 
-    return has_special && has_upper && has_lower && has_number;
+    return has_special && has_upper && has_lower && has_number && has_comma;
 }
 
+int main(int argc, char** argv) {
+    std::size_t passwordSize = 0;
+    try {
+        passwordSize = std::stoi(argv[1]);
+    } catch (std::exception& e) {
+        std::cerr << "Invalid argument: " << e.what() << std::endl;
+        return 1;
+    }
 
-int main() {
-    std::size_t passwordSize = promptForLength();
-    std::string password = generatePassword(passwordSize);
+    bool validPasswordGenerated = false;
+    while (!validPasswordGenerated) {
+        if (passwordSize < 16) {
+            std::cout << "Password must be at least 16 characters long. Generating password of minimum length" << std::endl;
+            passwordSize = 16;
+        }
 
-    if (validatePassword(password)) {
-        std::cout << "Generated password is valid: " << password << std::endl;
-    } else {
-        std::cout << "Generated password is not valid: " << password << std::endl;
+        std::string password = generatePassword(passwordSize);
+        if (validatePassword(password)) {
+            std::cout << password << std::endl;
+            validPasswordGenerated = true;
+        }
     }
 
     return 0;
