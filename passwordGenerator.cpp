@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
     bool validPasswordGenerated = false;
     while (!validPasswordGenerated) {
         std::string password = generatePassword(passwordSize);
-        std::cout << "Password not valid. Retrying.." << std::endl;
+    
         if (validatePassword(password)) {
             std::cout << password << std::endl;
             validPasswordGenerated = true;
@@ -86,3 +86,4 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
